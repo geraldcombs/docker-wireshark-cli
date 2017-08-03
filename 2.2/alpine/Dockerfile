@@ -3,6 +3,7 @@ ARG tshark_version
 
 RUN \
     apk update && \
-    apk add tshark=${tshark_version}
+    apk add tshark=${tshark_version} &&
+    mkdir /captures
 
 CMD ["sh"]

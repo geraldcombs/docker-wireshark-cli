@@ -37,11 +37,11 @@ after_script:
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - docker push $image ;
-  - if [ "$VERSION" == "LATEST_VERSION" ]; then
+  - if [ "$VERSION" == "$LATEST_VERSION" ]; then
       docker tag $image ${IMAGE_NAME}:latest ;
       docker push ${IMAGE_NAME}:latest ;
     fi
-  - if [ "$VERSION" == "STABLE_VERSION" ]; then
+  - if [ "$VERSION" == "$STABLE_VERSION" ]; then
       docker tag $image ${IMAGE_NAME}:stable ;
       docker push ${IMAGE_NAME}:stable ;
     fi
