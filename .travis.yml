@@ -15,6 +15,7 @@ env:
   global:
     - IMAGE_NAME=$DOCKER_USERNAME/wireshark-cli
     - STABLE_VERSION=2.2
+    - LATEST_VERSION=2.2
   matrix:
     - VERSION=${STABLE_VERSION} TSHARK_VERSION=2.2.7-r0
     - VERSION=${STABLE_VERSION} TSHARK_VERSION=2.2.7-r0 VARIANT=alpine
@@ -35,6 +36,9 @@ after_script:
 
 after_success:
   - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - if [ "$VERSION" == "LATEST_VERSION" ]; then
+      docker tag $image ${IMAGE_NAME}:latest ;
+    fi
   - if [ "$VERSION" == "STABLE_VERSION" ]; then
       docker tag $image ${IMAGE_NAME}:stable ;
     fi
