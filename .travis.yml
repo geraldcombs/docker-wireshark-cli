@@ -13,10 +13,9 @@ services:
 
 env:
   global:
+    - IMAGE_NAME=$DOCKER_USERNAME/wireshark-cli
     - STABLE_VERSION=2.2
   matrix:
-    - VERSION=stable TSHARK_VERSION=2.2.7-r0
-    - VERSION=stable TSHARK_VERSION=2.2.7-r0 VARIANT=alpine
     - VERSION=${STABLE_VERSION} TSHARK_VERSION=2.2.7-r0
     - VERSION=${STABLE_VERSION} TSHARK_VERSION=2.2.7-r0 VARIANT=alpine
 
@@ -26,7 +25,7 @@ env:
 before_script:
   - env | sort
   - cd "${VERSION/stable/$STABLE_VERSION}/${VARIANT:-alpine}"
-  - image="wireshark-cli:${VERSION}${VARIANT:+-$VARIANT}"
+  - image="${IMAGE_NAME}:${VERSION}${VARIANT:+-$VARIANT}"
 
 script:
   - travis_retry docker build --build-arg=tshark_version=${TSHARK_VERSION} --tag="$image" .
@@ -35,9 +34,10 @@ after_script:
   - docker images
 
 after_success:
-  - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
-    docker push $DOCKER_USERNAME/$image ;
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
+  - if [ "$VERSION" == "STABLE_VERSION" ]; then
+      docker tag $image ${IMAGE_NAME}:stable
     fi
+  - docker push $image ;
 
 # vim:set et ts=2 sw=2:
