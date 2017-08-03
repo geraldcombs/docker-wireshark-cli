@@ -10,22 +10,25 @@ language: bash
 services:
   - docker
 
+global:
+  - STABLE_VERSION=2.2
+
 env:
-  - VERSION=stable APK_VERSION=2.2.7-r0
-  - VERSION=stable APK_VERSION=2.2.7-r0 VARIANT=alpine
-  - VERSION=2.2 APK_VERSION=2.2.7-r0
-  - VERSION=2.2 APK_VERSION=2.2.7-r0 VARIANT=alpine
+  - VERSION=stable TSHARK_VERSION=2.2.7-r0
+  - VERSION=stable TSHARK_VERSION=2.2.7-r0 VARIANT=alpine
+  - VERSION=${STABLE_VERSION} TSHARK_VERSION=2.2.7-r0
+  - VERSION=${STABLE_VERSION} TSHARK_VERSION=2.2.7-r0 VARIANT=alpine
 
 #install:
 #  - echo "no install"
 
 before_script:
   - env | sort
-  - cd "$VERSION/${VARIANT:-alpine}"
+  - cd "${VERSION/stable/$STABLE_VERSION/}/${VARIANT:-alpine}"
   - image="wireshark-cli:${VERSION}${VARIANT:+-$VARIANT}"
 
 script:
-  - travis_retry docker build -t "$image" .
+  - travis_retry docker build --build-arg=tshark_version=${TSHARK_VERSION} --tag="$image" .
 
 after_script:
   - docker images
