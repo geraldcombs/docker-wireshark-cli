@@ -34,9 +34,9 @@ after_script:
   - docker images
 
 after_success:
-  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
   - if [ "$VERSION" == "STABLE_VERSION" ]; then
-      docker tag $image ${IMAGE_NAME}:stable
+      docker tag $image ${IMAGE_NAME}:stable ;
     fi
   - docker push $image ;
 
