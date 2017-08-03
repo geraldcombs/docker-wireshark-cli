@@ -10,21 +10,22 @@ language: bash
 services:
   - docker
 
-global:
-  - STABLE_VERSION=2.2
 
 env:
-  - VERSION=stable TSHARK_VERSION=2.2.7-r0
-  - VERSION=stable TSHARK_VERSION=2.2.7-r0 VARIANT=alpine
-  - VERSION=${STABLE_VERSION} TSHARK_VERSION=2.2.7-r0
-  - VERSION=${STABLE_VERSION} TSHARK_VERSION=2.2.7-r0 VARIANT=alpine
+  global:
+    - STABLE_VERSION=2.2
+  matrix:
+    - VERSION=stable TSHARK_VERSION=2.2.7-r0
+    - VERSION=stable TSHARK_VERSION=2.2.7-r0 VARIANT=alpine
+    - VERSION=${STABLE_VERSION} TSHARK_VERSION=2.2.7-r0
+    - VERSION=${STABLE_VERSION} TSHARK_VERSION=2.2.7-r0 VARIANT=alpine
 
 #install:
 #  - echo "no install"
 
 before_script:
   - env | sort
-  - cd "${VERSION/stable/$STABLE_VERSION/}/${VARIANT:-alpine}"
+  - cd "${VERSION/stable/$STABLE_VERSION}/${VARIANT:-alpine}"
   - image="wireshark-cli:${VERSION}${VARIANT:+-$VARIANT}"
 
 script:
