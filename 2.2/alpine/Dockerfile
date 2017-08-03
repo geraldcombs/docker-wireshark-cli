@@ -5,4 +5,4 @@ RUN \
     apk update && \
     apk add tshark=${tshark_version}
 
-CMD ["bash"]
+CMD ["sh"]
