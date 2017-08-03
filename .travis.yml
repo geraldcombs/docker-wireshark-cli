@@ -11,6 +11,8 @@ services:
   - docker
 
 env:
+  - VERSION=stable APK_VERSION=2.2.7-r0
+  - VERSION=stable APK_VERSION=2.2.7-r0 VARIANT=alpine
   - VERSION=2.2 APK_VERSION=2.2.7-r0
   - VERSION=2.2 APK_VERSION=2.2.7-r0 VARIANT=alpine
 
@@ -20,7 +22,7 @@ env:
 before_script:
   - env | sort
   - cd "$VERSION/${VARIANT:-alpine}"
-  - image="httpd:${VERSION}${VARIANT:+-$VARIANT}"
+  - image="wireshark-cli:${VERSION}${VARIANT:+-$VARIANT}"
 
 script:
   - travis_retry docker build -t "$image" .
