@@ -14,7 +14,6 @@ services:
 env:
   global:
     - STABLE_VERSION=2.2
-    - DOCKER_REPO=geraldcombs/wireshark-cli
   matrix:
     - VERSION=stable TSHARK_VERSION=2.2.7-r0
     - VERSION=stable TSHARK_VERSION=2.2.7-r0 VARIANT=alpine
@@ -37,8 +36,8 @@ after_script:
 
 after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD";
-    docker push $DOCKER_REPO;
+    docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" ;
+    docker push $DOCKER_USERNAME/$image ;
     fi
 
 # vim:set et ts=2 sw=2:
